@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 let todos: { id: number; title: string; completed: boolean }[] = [
   { id: 123, title: "Write documentation", completed: false },
+  { id: 4, title: "this is my todo", completed: true }
 ];
 
 export async function GET() {

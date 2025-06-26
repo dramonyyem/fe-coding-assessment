@@ -15,8 +15,7 @@ export default function Page() {
   const [todo, setTodo] = useState<Todo | null>(null);
   const [transition, setTransition] = useState('bg-blue-500');
   const [error, setError] = useState('');
-
-
+  const [deletedId, setDeletedId] = useState<string | null>()
   const fetchTodos = async () => {
     const res = await fetch(`/api/todos`);
     const data = await res.json();
@@ -104,8 +103,12 @@ export default function Page() {
       },
       body: JSON.stringify({ id }),
     });
+    setDeletedId(id);
+   
     if (res.ok) {
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+      setTimeout(() => {
+         setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+      }, 400)
     } else {
       console.error('Failed to delete todo');
     }
@@ -125,10 +128,10 @@ export default function Page() {
           Add Todo
         </button> */}
       <div className='px-4 py-2'>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
+      <div className="flex items-center justify-center grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-3">
         {todos.map((todo) => (
-          <div  key={todo.id} >
-            <div className={"scale-animation bg-white drop-shadow-lg hover:cursor-pointer hover:text-white hover:bg-blue-500 h-[100px] items-center justify-between p-2 rounded-lg shadow-sm"}>
+          <div  key={todo.id}>
+            <div className={`scale-animation bg-white drop-shadow-lg hover:cursor-pointer hover:text-white hover:bg-blue-500 h-[100px] items-center justify-between p-2 rounded-lg shadow-sm ${deletedId === todo.id ? 'scale-out-animation' : ''}`}>
               <div>
                 <div>
                   <b>
